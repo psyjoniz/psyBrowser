@@ -1,0 +1,188 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "CefSharp.Common.NETCore/131.2.70": {
+        "dependencies": {
+          "chromiumembeddedframework.runtime": "131.2.7"
+        },
+        "runtimeTargets": {
+          "runtimes/win-arm64/lib/netcoreapp3.1/CefSharp.Core.Runtime.dll": {
+            "rid": "win-arm64",
+            "assetType": "runtime",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-arm64/lib/netcoreapp3.1/CefSharp.Core.dll": {
+            "rid": "win-arm64",
+            "assetType": "runtime",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-arm64/lib/netcoreapp3.1/CefSharp.dll": {
+            "rid": "win-arm64",
+            "assetType": "runtime",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-arm64/lib/netcoreapp3.1/Ijwhost.dll": {
+            "rid": "win-arm64",
+            "assetType": "runtime",
+            "fileVersion": "3.100.3222.56520"
+          },
+          "runtimes/win-x64/lib/netcoreapp3.1/CefSharp.Core.Runtime.dll": {
+            "rid": "win-x64",
+            "assetType": "runtime",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x64/lib/netcoreapp3.1/CefSharp.Core.dll": {
+            "rid": "win-x64",
+            "assetType": "runtime",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x64/lib/netcoreapp3.1/CefSharp.dll": {
+            "rid": "win-x64",
+            "assetType": "runtime",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x64/lib/netcoreapp3.1/Ijwhost.dll": {
+            "rid": "win-x64",
+            "assetType": "runtime",
+            "fileVersion": "3.100.3222.56520"
+          },
+          "runtimes/win-x86/lib/netcoreapp3.1/CefSharp.Core.Runtime.dll": {
+            "rid": "win-x86",
+            "assetType": "runtime",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x86/lib/netcoreapp3.1/CefSharp.Core.dll": {
+            "rid": "win-x86",
+            "assetType": "runtime",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x86/lib/netcoreapp3.1/CefSharp.dll": {
+            "rid": "win-x86",
+            "assetType": "runtime",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x86/lib/netcoreapp3.1/Ijwhost.dll": {
+            "rid": "win-x86",
+            "assetType": "runtime",
+            "fileVersion": "3.100.3222.56520"
+          },
+          "runtimes/win-arm64/native/CefSharp.BrowserSubprocess.Core.dll": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-arm64/native/CefSharp.BrowserSubprocess.dll": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-arm64/native/CefSharp.BrowserSubprocess.exe": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-arm64/native/CefSharp.BrowserSubprocess.runtimeconfig.json": {
+            "rid": "win-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/CefSharp.BrowserSubprocess.Core.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x64/native/CefSharp.BrowserSubprocess.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x64/native/CefSharp.BrowserSubprocess.exe": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x64/native/CefSharp.BrowserSubprocess.runtimeconfig.json": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x86/native/CefSharp.BrowserSubprocess.Core.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x86/native/CefSharp.BrowserSubprocess.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x86/native/CefSharp.BrowserSubprocess.exe": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "131.2.70.0"
+          },
+          "runtimes/win-x86/native/CefSharp.BrowserSubprocess.runtimeconfig.json": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "CefSharp.WinForms.NETCore/131.2.70": {
+        "dependencies": {
+          "CefSharp.Common.NETCore": "131.2.70"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/CefSharp.WinForms.dll": {
+            "assemblyVersion": "131.2.70.0",
+            "fileVersion": "131.2.70.0"
+          }
+        }
+      },
+      "chromiumembeddedframework.runtime/131.2.7": {}
+    }
+  },
+  "libraries": {
+    "CefSharp.Common.NETCore/131.2.70": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/5vlEz31u+8x0d/a0jb+YXN/IHzXZUJyamgDUvZeltOWDttao3gBV9DGoNPBxzdz79h7K+4oPWPVKGoguhqkcA==",
+      "path": "cefsharp.common.netcore/131.2.70",
+      "hashPath": "cefsharp.common.netcore.131.2.70.nupkg.sha512"
+    },
+    "CefSharp.WinForms.NETCore/131.2.70": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-mMRv4k6dLJffh4s+zS/UahncFtzIu+4gCR8AMkg1RTebhqzC0vegvUVuOqiX2TflBz8YFVI8CEFiMEd8kU62Ow==",
+      "path": "cefsharp.winforms.netcore/131.2.70",
+      "hashPath": "cefsharp.winforms.netcore.131.2.70.nupkg.sha512"
+    },
+    "chromiumembeddedframework.runtime/131.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SOvfraqQ2KaJra9gdFPyxoZd8RMV2jHPtgRsMINtvPOtlbLskDGJOVjWvvekv/u3b74Ins3YX5XwxBCt+dWjxQ==",
+      "path": "chromiumembeddedframework.runtime/131.2.7",
+      "hashPath": "chromiumembeddedframework.runtime.131.2.7.nupkg.sha512"
+    }
+  }
+}
