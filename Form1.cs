@@ -13,6 +13,7 @@ namespace psyBrowser
 {
     public partial class psyBrowser : Form
     {
+        private static readonly Mutex VaultMutex = new(false, @"Local\psyBrowserVault");
         private readonly string vaultPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "psyBrowser",
@@ -55,7 +56,7 @@ namespace psyBrowser
             }
             if (keyData == (Keys.Control | Keys.N))
             {
-                OpenNewWindow("about:blank", this);
+                OpenNewProcess("about:blank");
                 return true;
             }
             if (keyData == (Keys.Control | Keys.R))
@@ -99,7 +100,7 @@ namespace psyBrowser
             textBoxURL.Text = searchUrl;
             browser.Load(searchUrl);
         }
-
+        /* this is a bad way to open new window and is being deprecated in favor of OpenNewProcess() */
         internal static void OpenNewWindow(string? url = null, psyBrowser? source = null)
         {
             source ??= Form.ActiveForm as psyBrowser;
@@ -130,6 +131,22 @@ namespace psyBrowser
             if (!string.IsNullOrWhiteSpace(url))
                 win.Navigate(url);
         }
+        internal static void OpenNewProcess(string? url = null)
+        {
+            url ??= "about:blank";
+
+            var exe = Environment.ProcessPath
+                      ?? Assembly.GetExecutingAssembly().Location;
+
+            var psi = new ProcessStartInfo(exe)
+            {
+                UseShellExecute = true
+            };
+            psi.ArgumentList.Add(url);
+
+            Process.Start(psi);
+        }
+
         private static bool IsFullyOnAnyWorkingArea(Rectangle bounds)
         {
             foreach (var screen in Screen.AllScreens)
@@ -138,13 +155,13 @@ namespace psyBrowser
 
             return false;
         }
-        public psyBrowser()
+        public psyBrowser(string? startupUrl = null)
         {
             InitializeComponent();
 
             var vault = LoadVault(vaultPath);
             ApplyWindowPlacement(vault);
-            var url = vault?.LastLocation ?? "about:blank";
+            var url = string.IsNullOrWhiteSpace(startupUrl) ? (vault?.LastLocation ?? "about:blank") : startupUrl.Trim();
             currentZoomLevel = vault?.CurrentZoomLevel ?? 0;
             //url = "https://browserdetect.psy-core.com";
 
@@ -333,9 +350,9 @@ namespace psyBrowser
                         chromiumWebBrowser.Reload(true); //hard reload
                         return true;
                     }
-                    if ((modifiers & CefEventFlags.ShiftDown) == 0 && windowsKeyCode == (int)Keys.N) // Ctrl + N
+                    if ((modifiers & CefEventFlags.ShiftDown) == 0 && windowsKeyCode == (int)Keys.N)
                     {
-                        form.BeginInvoke(new Action(() => psyBrowser.OpenNewWindow("about:blank", form)));
+                        form.BeginInvoke(new Action(() => psyBrowser.OpenNewProcess("about:blank")));
                         return true;
                     }
                 }
@@ -395,7 +412,7 @@ namespace psyBrowser
 
                 if (!string.IsNullOrWhiteSpace(targetUrl))
                 {
-                    psyBrowser.OpenNewWindow(targetUrl);
+                    psyBrowser.OpenNewProcess(targetUrl);
                 }
 
                 return true; // cancel Chromium popup
@@ -447,6 +464,7 @@ namespace psyBrowser
                 DataProtectionScope.CurrentUser
             );
 
+            VaultMutex.WaitOne();
             // atomic-ish write
             string tmp = filePath + ".tmp";
             try
@@ -457,10 +475,12 @@ namespace psyBrowser
             finally
             {
                 try { File.Delete(tmp); } catch { }
+                VaultMutex.ReleaseMutex();
             }
         }
         public static LocalVault LoadVault(string filePath)
         {
+            VaultMutex.WaitOne();
             try
             {
                 if (!File.Exists(filePath))
@@ -481,6 +501,10 @@ namespace psyBrowser
             {
                 //Debug.WriteLine($"Vault load failed, resetting: {ex.Message}");
                 return new LocalVault();
+            }
+            finally
+            {
+                VaultMutex.ReleaseMutex();
             }
         }
         private void PersistLastLocation(string? url)

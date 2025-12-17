@@ -16,17 +16,6 @@ namespace psyBrowser
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            bool createdNew;
-            mutex = new Mutex(true, "psyBrowser", out createdNew);
-
-            if (!createdNew)
-            {
-                // Another instance already owns the mutex
-                return;
-            }
-
             if (Cef.IsInitialized == true) // Check explicitly for 'true'
             {
                 Debug.WriteLine("CefSharp is already initialized.");
@@ -36,18 +25,23 @@ namespace psyBrowser
                 Debug.WriteLine("CefSharp is not initialized. Initializing now...");
                 //var appName = Assembly.GetExecutingAssembly().GetName().Name;
                 //var appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                var basePath = Path.Combine(
+    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+    "psyBrowser"
+);
+
+                // unique per process so multiple instances can run
+                var cachePath = Path.Combine(basePath, "cef_cache", $"pid_{Environment.ProcessId}");
+
+                Directory.CreateDirectory(cachePath);
+
                 var settings = new CefSettings
                 {
                     LogSeverity = LogSeverity.Verbose,
-                    LogFile = "cef_log.txt",
-                    // Put all Chromium profile data somewhere explicit (and lock down preference persistence)
-                    CachePath = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                        "psyBrowser",
-                        "cef_cache"
-                    ),
+                    LogFile = Path.Combine(basePath, "cef_log.txt"),
+                    CachePath = cachePath,
                 };
-                //register "psybrowser://" as first class URL telling CEF it can be resolved (locally)
+
                 settings.RegisterScheme(new CefCustomScheme
                 {
                     SchemeName = "psybrowser",
@@ -56,7 +50,12 @@ namespace psyBrowser
                     IsLocal = true,
                     SchemeHandlerFactory = new global::psyBrowser.InternalPages.PsyBrowserSchemeHandlerFactory()
                 });
-                Cef.Initialize(settings);
+
+                if (!Cef.Initialize(settings))
+                {
+                    MessageBox.Show("CEF failed to initialize. Check cef_log.txt.", "psyBrowser");
+                    return;
+                }
             }
             //process-level shutdown
             Application.ApplicationExit += (_, __) =>
@@ -65,7 +64,8 @@ namespace psyBrowser
                 Cef.Shutdown();
             };
             ApplicationConfiguration.Initialize();
-            Application.Run(new psyBrowser());
+            var startupUrl = (Environment.GetCommandLineArgs().Length > 1) ? Environment.GetCommandLineArgs()[1] : null;
+            Application.Run(new psyBrowser(startupUrl));
         }
     }
 }
