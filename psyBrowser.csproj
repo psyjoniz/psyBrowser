@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.WinForms.NETCore" Version="131.3.10" />
+    <PackageReference Include="CefSharp.WinForms.NETCore" Version="143.0.90" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,5 +28,15 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="InternalPages\" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<!-- Force internal HTML pages to be embedded -->
+		<None Remove="InternalPages\**\*.html" />
+		<EmbeddedResource Include="InternalPages\**\*.html" />
+	</ItemGroup>
 
 </Project>

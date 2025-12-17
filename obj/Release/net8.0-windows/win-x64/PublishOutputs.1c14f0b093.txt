@@ -536,7 +536,6 @@ C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\publis
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\publish\libGLESv2.dll
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\publish\libcef.dll
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\publish\resources.pak
-C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\publish\snapshot_blob.bin
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\publish\v8_context_snapshot.bin
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\publish\vk_swiftshader.dll
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\publish\vk_swiftshader_icd.json

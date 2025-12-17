@@ -77,7 +77,6 @@ C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\libEGL
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\libGLESv2.dll
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\libcef.dll
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\resources.pak
-C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\snapshot_blob.bin
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\v8_context_snapshot.bin
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\vk_swiftshader.dll
 C:\Users\psyjo\source\repos\psyBrowser\bin\Release\net8.0-windows\win-x64\vk_swiftshader_icd.json
@@ -554,3 +553,4 @@ C:\Users\psyjo\source\repos\psyBrowser\obj\Release\net8.0-windows\win-x64\refint
 C:\Users\psyjo\source\repos\psyBrowser\obj\Release\net8.0-windows\win-x64\psyBrowser.pdb
 C:\Users\psyjo\source\repos\psyBrowser\obj\Release\net8.0-windows\win-x64\psyBrowser.genruntimeconfig.cache
 C:\Users\psyjo\source\repos\psyBrowser\obj\Release\net8.0-windows\win-x64\ref\psyBrowser.dll
+C:\Users\psyjo\source\repos\psyBrowser\obj\Release\net8.0-windows\win-x64\psyBrowser.sourcelink.json

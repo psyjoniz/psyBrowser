@@ -36,47 +36,51 @@
             // 
             // textBoxURL
             // 
-            textBoxURL.BackColor = Color.DimGray;
+            textBoxURL.BackColor = Color.FromArgb(192, 255, 255);
             textBoxURL.BorderStyle = BorderStyle.FixedSingle;
             textBoxURL.Cursor = Cursors.IBeam;
             textBoxURL.Dock = DockStyle.Top;
             textBoxURL.Location = new Point(0, 0);
-            textBoxURL.Margin = new Padding(5);
+            textBoxURL.Margin = new Padding(4);
             textBoxURL.MaxLength = 99999;
             textBoxURL.Name = "textBoxURL";
             textBoxURL.PlaceholderText = "[ URL | Search ] + Enter";
-            textBoxURL.Size = new Size(2022, 39);
+            textBoxURL.Size = new Size(1555, 31);
             textBoxURL.TabIndex = 0;
             textBoxURL.WordWrap = false;
             // 
             // panelRenderer
             // 
             panelRenderer.Dock = DockStyle.Fill;
-            panelRenderer.Location = new Point(0, 39);
+            panelRenderer.Location = new Point(0, 31);
+            panelRenderer.Margin = new Padding(2);
             panelRenderer.Name = "panelRenderer";
-            panelRenderer.Size = new Size(2022, 914);
+            panelRenderer.Size = new Size(1555, 714);
             panelRenderer.TabIndex = 1;
             // 
             // progressBarPageLoading
             // 
             progressBarPageLoading.Dock = DockStyle.Top;
-            progressBarPageLoading.Location = new Point(0, 39);
+            progressBarPageLoading.Location = new Point(0, 31);
             progressBarPageLoading.Margin = new Padding(0);
             progressBarPageLoading.Name = "progressBarPageLoading";
-            progressBarPageLoading.Size = new Size(2022, 3);
+            progressBarPageLoading.Size = new Size(1555, 2);
             progressBarPageLoading.TabIndex = 0;
             // 
             // psyBrowser
             // 
             AccessibleDescription = "psy Web Browser";
-            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Control;
-            ClientSize = new Size(2022, 953);
+            BackColor = Color.FromArgb(192, 255, 255);
+            ClientSize = new Size(1555, 745);
             Controls.Add(progressBarPageLoading);
             Controls.Add(panelRenderer);
             Controls.Add(textBoxURL);
+            ForeColor = SystemColors.ControlText;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(2);
+            MinimumSize = new Size(250, 250);
             Name = "psyBrowser";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "psyBrowser";

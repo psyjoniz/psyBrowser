@@ -14,6 +14,6 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)chromiumembeddedframework.runtime\131.3.1\buildTransitive\chromiumembeddedframework.runtime.props" Condition="Exists('$(NuGetPackageRoot)chromiumembeddedframework.runtime\131.3.1\buildTransitive\chromiumembeddedframework.runtime.props')" />
+    <Import Project="$(NuGetPackageRoot)chromiumembeddedframework.runtime\143.0.9\buildTransitive\chromiumembeddedframework.runtime.props" Condition="Exists('$(NuGetPackageRoot)chromiumembeddedframework.runtime\143.0.9\buildTransitive\chromiumembeddedframework.runtime.props')" />
   </ImportGroup>
 </Project>
