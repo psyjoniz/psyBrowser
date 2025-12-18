@@ -10,12 +10,16 @@ namespace psyBrowser
     internal static class Program
     {
         private static Mutex? mutex;
+        private static Mutex? _singleInstanceMutex;
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            bool createdNew;
+            _singleInstanceMutex = new Mutex(true, @"Local\psyBrowser.SingleInstance", out createdNew);
+            if(!createdNew) { return; } //another instance was already running
             if (Cef.IsInitialized == true) // Check explicitly for 'true'
             {
                 Debug.WriteLine("CefSharp is already initialized.");
@@ -25,14 +29,9 @@ namespace psyBrowser
                 Debug.WriteLine("CefSharp is not initialized. Initializing now...");
                 //var appName = Assembly.GetExecutingAssembly().GetName().Name;
                 //var appVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                var basePath = Path.Combine(
-    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-    "psyBrowser"
-);
+                var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "psyBrowser");
 
-                // unique per process so multiple instances can run
-                var cachePath = Path.Combine(basePath, "cef_cache", $"pid_{Environment.ProcessId}");
-
+                var cachePath = Path.Combine(basePath, "cef_cache", "Default");
                 Directory.CreateDirectory(cachePath);
 
                 var settings = new CefSettings
@@ -65,7 +64,32 @@ namespace psyBrowser
             };
             ApplicationConfiguration.Initialize();
             var startupUrl = (Environment.GetCommandLineArgs().Length > 1) ? Environment.GetCommandLineArgs()[1] : null;
-            Application.Run(new psyBrowser(startupUrl));
+            Application.Run(new BrowserAppContext(startupUrl));
         }
     }
+    internal sealed class BrowserAppContext : ApplicationContext
+    {
+        private int _openWindows;
+
+        public BrowserAppContext(string? startupUrl)
+        {
+            OpenWindow(startupUrl);
+        }
+
+        private void OpenWindow(string? url)
+        {
+            var win = new psyBrowser(url);
+            _openWindows++;
+
+            win.FormClosed += (_, __) =>
+            {
+                _openWindows--;
+                if (_openWindows <= 0)
+                    ExitThread();
+            };
+
+            win.Show();
+        }
+    }
+
 }

@@ -62,7 +62,7 @@ namespace psyBrowser
             }
             if (keyData == (Keys.Control | Keys.N))
             {
-                OpenNewProcess("about:blank");
+                OpenNewWindow("about:blank", this);
                 return true;
             }
             if (keyData == (Keys.Control | Keys.R))
@@ -106,7 +106,6 @@ namespace psyBrowser
             textBoxURL.Text = searchUrl;
             browser.Load(searchUrl);
         }
-        /* this is a bad way to open new window and is being deprecated in favor of OpenNewProcess() */
         internal static void OpenNewWindow(string? url = null, psyBrowser? source = null)
         {
             source ??= Form.ActiveForm as psyBrowser;
@@ -382,7 +381,7 @@ namespace psyBrowser
                     }
                     if ((modifiers & CefEventFlags.ShiftDown) == 0 && windowsKeyCode == (int)Keys.N)
                     {
-                        form.BeginInvoke(new Action(() => psyBrowser.OpenNewProcess("about:blank")));
+                        form.BeginInvoke(new Action(() => psyBrowser.OpenNewWindow("about:blank", form)));
                         return true;
                     }
                 }
