@@ -36,12 +36,13 @@
             // 
             // textBoxURL
             // 
-            textBoxURL.BackColor = Color.FromArgb(192, 255, 255);
+            textBoxURL.BackColor = Color.FromArgb(64, 64, 64);
             textBoxURL.BorderStyle = BorderStyle.FixedSingle;
             textBoxURL.Cursor = Cursors.IBeam;
             textBoxURL.Dock = DockStyle.Top;
+            textBoxURL.ForeColor = Color.FromArgb(192, 255, 255);
             textBoxURL.Location = new Point(0, 0);
-            textBoxURL.Margin = new Padding(4);
+            textBoxURL.Margin = new Padding(6);
             textBoxURL.MaxLength = 99999;
             textBoxURL.Name = "textBoxURL";
             textBoxURL.PlaceholderText = "[ URL | Search ] + Enter";

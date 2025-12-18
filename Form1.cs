@@ -33,6 +33,12 @@ namespace psyBrowser
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             //Debug.WriteLine($"Key pressed: {keyData}");
+            //chromium dev tools
+            if (keyData == (Keys.Control | Keys.Shift | Keys.I))
+            {
+                browser?.ShowDevTools();
+                return true;
+            }
             // Zoom in: Ctrl+= (also covers Ctrl+Shift+= on most keyboards)
             if (keyData == (Keys.Control | Keys.Oemplus) ||
                 keyData == (Keys.Control | Keys.Shift | Keys.Oemplus) ||
@@ -159,6 +165,8 @@ namespace psyBrowser
         {
             InitializeComponent();
 
+            string originalTitle = this.Text;
+
             var vault = LoadVault(vaultPath);
             ApplyWindowPlacement(vault);
             var url = string.IsNullOrWhiteSpace(startupUrl) ? (vault?.LastLocation ?? "about:blank") : startupUrl.Trim();
@@ -170,11 +178,27 @@ namespace psyBrowser
             browser.RequestHandler = new CustomRequestHandler(this);
             browser.AddressChanged += Browser_AddressChanged;
 
+            //respect html titles
+            browser.TitleChanged += (_, e) =>
+            {
+                if (IsDisposed || !IsHandleCreated) return;
+
+                BeginInvoke(new Action(() =>
+                {
+                    // keep it simple; you can prepend an app name later if you want
+                    this.Text = e.Title ?? originalTitle;
+                }));
+            };
+
             textBoxURL.Text = url;
 
             /* handle select-all behavior for user input to url */
             textBoxURL.GotFocus += (_, __) => textBoxURL.SelectAll();
             textBoxURL.MouseUp += (_, __) => { if (textBoxURL.SelectionLength == 0) textBoxURL.SelectAll(); };
+
+            panelRenderer.BackColor = Color.White;
+            this.BackColor = Color.White;
+            browser.BackColor = Color.White;
 
             panelRenderer.Controls.Add(browser);
 
@@ -340,6 +364,12 @@ namespace psyBrowser
                 if (type == KeyType.RawKeyDown && (modifiers & CefEventFlags.ControlDown) != 0)
                 {
                     //Debug.WriteLine($"Ctrl pressed");
+                    //chromium devtools
+                    if ((modifiers & CefEventFlags.ShiftDown) != 0 && windowsKeyCode == (int)Keys.I)
+                    {
+                        form.BeginInvoke(new Action(() => form.browser?.ShowDevTools()));
+                        return true;
+                    }
                     if ((modifiers & CefEventFlags.ShiftDown) == 0 && windowsKeyCode == (int)Keys.R) // Ctrl + R
                     {
                         chromiumWebBrowser.Reload(); //normal reload

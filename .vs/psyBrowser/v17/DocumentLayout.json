@@ -3,47 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\psyjo\\AppData\\Local\\Temp\\.vsdbgsrc\\fdba9ca028901b1f7d5f39e92c3a33361f44fe501093303b6971bc0b2f74b39f\\ChromiumWebBrowser.Partial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\internalpages\\about_config.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:internalpages\\about_config.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\internalpages\\psybrowserresourcehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:internalpages\\psybrowserresourcehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\internalpages\\psybrowserschemehandlerfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:internalpages\\psybrowserschemehandlerfactory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\internalpages\\internalpagerouter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:internalpages\\internalpagerouter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\internalpages\\internalpageassets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:internalpages\\internalpageassets.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\internalpages\\about_config.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:internalpages\\about_config.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|C:\\Users\\psyjo\\source\\repos\\psyBrowser\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\psybrowser.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:psybrowser.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|c:\\users\\psyjo\\source\\repos\\psybrowser\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7191E5F2-792B-46DE-A1B2-B6FE2BE26F91}|psyBrowser.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -57,70 +30,20 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ChromiumWebBrowser.Partial.cs",
-              "DocumentMoniker": "C:\\Users\\psyjo\\AppData\\Local\\Temp\\.vsdbgsrc\\fdba9ca028901b1f7d5f39e92c3a33361f44fe501093303b6971bc0b2f74b39f\\ChromiumWebBrowser.Partial.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\fdba9ca028901b1f7d5f39e92c3a33361f44fe501093303b6971bc0b2f74b39f\\ChromiumWebBrowser.Partial.cs",
-              "ToolTip": "C:\\Users\\psyjo\\AppData\\Local\\Temp\\.vsdbgsrc\\fdba9ca028901b1f7d5f39e92c3a33361f44fe501093303b6971bc0b2f74b39f\\ChromiumWebBrowser.Partial.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\..\\AppData\\Local\\Temp\\.vsdbgsrc\\fdba9ca028901b1f7d5f39e92c3a33361f44fe501093303b6971bc0b2f74b39f\\ChromiumWebBrowser.Partial.cs [Read Only]",
-              "ViewState": "AgIAAAACAAAAAAAAAAD4vxMCAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-17T17:14:29.285Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PsyBrowserResourceHandler.cs",
-              "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\PsyBrowserResourceHandler.cs",
-              "RelativeDocumentMoniker": "InternalPages\\PsyBrowserResourceHandler.cs",
-              "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\PsyBrowserResourceHandler.cs",
-              "RelativeToolTip": "InternalPages\\PsyBrowserResourceHandler.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAQwCwAAABSAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-17T14:39:01.411Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "PsyBrowserSchemeHandlerFactory.cs",
-              "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\PsyBrowserSchemeHandlerFactory.cs",
-              "RelativeDocumentMoniker": "InternalPages\\PsyBrowserSchemeHandlerFactory.cs",
-              "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\PsyBrowserSchemeHandlerFactory.cs",
-              "RelativeToolTip": "InternalPages\\PsyBrowserSchemeHandlerFactory.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-17T14:38:14.384Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "README.txt",
               "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\README.txt",
               "RelativeDocumentMoniker": "README.txt",
               "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\README.txt",
               "RelativeToolTip": "README.txt",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
               "WhenOpened": "2025-12-16T10:07:38.899Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "psyBrowser.csproj",
-              "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\psyBrowser.csproj",
-              "RelativeDocumentMoniker": "psyBrowser.csproj",
-              "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\psyBrowser.csproj",
-              "RelativeToolTip": "psyBrowser.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-14T22:48:09.468Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -128,69 +51,33 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAA4AAAAAAAAAAADwvzkAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-18T17:40:28.008Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-18T17:40:28.008Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Form1.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\Form1.cs",
-              "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\Form1.cs [Design]",
-              "RelativeToolTip": "Form1.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-17T13:41:22.762Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAIABAAAAAAAAAAAowJ4BAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAJgAAAAAAAAAAAAowLwAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T15:38:17.541Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "InternalPageRouter.cs",
-              "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\InternalPageRouter.cs",
-              "RelativeDocumentMoniker": "InternalPages\\InternalPageRouter.cs",
-              "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\InternalPageRouter.cs",
-              "RelativeToolTip": "InternalPages\\InternalPageRouter.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-17T12:44:07.164Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "InternalPageAssets.cs",
-              "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\InternalPageAssets.cs",
-              "RelativeDocumentMoniker": "InternalPages\\InternalPageAssets.cs",
-              "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\InternalPageAssets.cs",
-              "RelativeToolTip": "InternalPages\\InternalPageAssets.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-17T12:44:06.186Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 0,
               "Title": "about_config.html",
               "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\about_config.html",
               "RelativeDocumentMoniker": "InternalPages\\about_config.html",
               "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\InternalPages\\about_config.html",
               "RelativeToolTip": "InternalPages\\about_config.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-12-17T12:42:22.688Z"
+              "WhenOpened": "2025-12-18T09:20:27.87Z",
+              "EditorCaption": ""
             }
           ]
         }
