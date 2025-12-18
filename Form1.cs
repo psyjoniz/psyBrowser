@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using psyBrowser.InternalPages;
+using CefSharp.Handler;
 
 namespace psyBrowser
 {
@@ -176,6 +177,18 @@ namespace psyBrowser
             browser = new ChromiumWebBrowser(url);
             browser.LifeSpanHandler = new CustomLifeSpanHandler();
             browser.RequestHandler = new CustomRequestHandler(this);
+            browser.MenuHandler = new CustomMenuHandler(isUiAlive: () => !IsDisposed && !Disposing && IsHandleCreated, openInNewWindowOnUi: (targetUrl) =>
+                    {
+                        if (IsDisposed || Disposing) return;
+
+                        BeginInvoke(new Action(() =>
+                            {
+                                if (IsDisposed || Disposing) return;
+
+                                OpenNewWindow(targetUrl);
+                            }));
+                    }
+                );
             browser.AddressChanged += Browser_AddressChanged;
 
             //respect html titles
@@ -595,6 +608,62 @@ namespace psyBrowser
             public bool OnSelectClientCertificate(IWebBrowser chromiumWebBrowser, IBrowser browser, bool isProxy, string host, int port, X509Certificate2Collection certificates, ISelectClientCertificateCallback callback) => false;
             public bool OnBeforeResourceLoad(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, IRequestCallback callback) => false;
             public IResourceRequestHandler GetResourceRequestHandler(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, bool isNavigation, bool isDownload, string requestInitiator, ref bool disableDefaultHandling) => null;
+        }
+        internal sealed class CustomMenuHandler : ContextMenuHandler
+        {
+            private const CefMenuCommand OpenLinkInNewWindowCmd = (CefMenuCommand)26501;
+
+            private readonly Func<bool> _isUiAlive;
+            private readonly Action<string> _openInNewWindowOnUi;
+
+            public CustomMenuHandler(Func<bool> isUiAlive, Action<string> openInNewWindowOnUi)
+            {
+                _isUiAlive = isUiAlive ?? throw new ArgumentNullException(nameof(isUiAlive));
+                _openInNewWindowOnUi = openInNewWindowOnUi ?? throw new ArgumentNullException(nameof(openInNewWindowOnUi));
+            }
+
+            protected override void OnBeforeContextMenu(
+                IWebBrowser chromiumWebBrowser,
+                IBrowser browser,
+                IFrame frame,
+                IContextMenuParams parameters,
+                IMenuModel model)
+            {
+                var linkUrl = parameters?.LinkUrl;
+                if (!string.IsNullOrWhiteSpace(linkUrl))
+                {
+                    model.AddSeparator();
+                    model.AddItem(OpenLinkInNewWindowCmd, "Open link in new window");
+                }
+
+                base.OnBeforeContextMenu(chromiumWebBrowser, browser, frame, parameters, model);
+            }
+            protected override bool OnContextMenuCommand(
+                IWebBrowser chromiumWebBrowser,
+                IBrowser browser,
+                IFrame frame,
+                IContextMenuParams parameters,
+                CefMenuCommand commandId,
+                CefEventFlags eventFlags)
+            {
+                if (commandId == OpenLinkInNewWindowCmd)
+                {
+                    var url = parameters?.LinkUrl;
+                    if (!string.IsNullOrWhiteSpace(url) && _isUiAlive())
+                    {
+                        _openInNewWindowOnUi(url);
+                    }
+                    return true;
+                }
+
+                return base.OnContextMenuCommand(
+                    chromiumWebBrowser,
+                    browser,
+                    frame,
+                    parameters,
+                    commandId,
+                    eventFlags);
+            }
         }
         private void ApplyWindowPlacement(LocalVault vault)
         {

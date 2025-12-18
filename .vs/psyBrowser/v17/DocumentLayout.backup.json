@@ -50,8 +50,7 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAJ8AAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-18T17:40:28.008Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-18T17:40:28.008Z"
             },
             {
               "$type": "Document",
@@ -59,9 +58,9 @@
               "Title": "Form1.cs",
               "DocumentMoniker": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\Form1.cs",
               "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\Form1.cs",
-              "RelativeToolTip": "Form1.cs",
-              "ViewState": "AgIAAJ4AAAAAAAAAAAAswLIAAAAMAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\psyjo\\source\\repos\\psyBrowser\\Form1.cs*",
+              "RelativeToolTip": "Form1.cs*",
+              "ViewState": "AgIAAKUAAAAAAAAAAAAewLwAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T15:38:17.541Z",
               "EditorCaption": ""
