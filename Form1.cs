@@ -561,13 +561,33 @@ namespace psyBrowser
                 }
                 return false;
             }
+            public bool OnOpenUrlFromTab(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, WindowOpenDisposition targetDisposition, bool userGesture)
+            {
+                if (string.IsNullOrWhiteSpace(targetUrl))
+                    return false;
+
+                // If Chromium is asking for a new window/tab, we treat it as "open new psyBrowser window"
+                if (targetDisposition == WindowOpenDisposition.NewForegroundTab ||
+                    targetDisposition == WindowOpenDisposition.NewBackgroundTab ||
+                    targetDisposition == WindowOpenDisposition.NewWindow ||
+                    targetDisposition == WindowOpenDisposition.NewPopup)
+                {
+                    form.BeginInvoke(new Action(() =>
+                    {
+                        Program.AppCtx?.OpenNewWindow(targetUrl);
+                    }));
+
+                    return true; // cancel default handling
+                }
+
+                return false;
+            }
             // no-op implementations
             public void OnRenderViewReady(IWebBrowser chromiumWebBrowser, IBrowser browser) { }
             public bool GetAuthCredentials(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, bool isProxy, string host, int port, string realm, string scheme, IAuthCallback callback) { return false; }
             public bool OnCertificateError(IWebBrowser chromiumWebBrowser, IBrowser browser, CefErrorCode errorCode, string requestUrl, ISslInfo sslInfo, IRequestCallback callback) => false;
             public void OnPluginCrashed(IWebBrowser chromiumWebBrowser, IBrowser browser, string pluginPath) { }
             public void OnDocumentAvailableInMainFrame(IWebBrowser chromiumWebBrowser, IBrowser browser) { }
-            public bool OnOpenUrlFromTab(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, WindowOpenDisposition targetDisposition, bool userGesture) => false;
             public void OnResourceRedirect(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, IRequest request, IResponse response, ref string newUrl) { }
             public bool OnQuotaRequest(IWebBrowser chromiumWebBrowser, IBrowser browser, string originUrl, long newSize, IRequestCallback callback) => false;
             public void OnRenderProcessTerminated(IWebBrowser chromiumWebBrowser, IBrowser browser, CefTerminationStatus status, int errorCode, string errorString) { }
