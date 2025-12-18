@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("psyBrowser")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bc397b94fae7c0d1d8dcfeb76c19b378b0a4d86e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+04d986b654ba448617afea54fc6939fd8a916587")]
 [assembly: System.Reflection.AssemblyProductAttribute("psyBrowser")]
 [assembly: System.Reflection.AssemblyTitleAttribute("psyBrowser")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

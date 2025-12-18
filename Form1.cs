@@ -99,6 +99,7 @@ namespace psyBrowser
                 string url = NormalizeToUrl(input);
                 textBoxURL.Text = url;
                 browser.Load(url);
+                PersistLastLocation(input);
                 return;
             }
 

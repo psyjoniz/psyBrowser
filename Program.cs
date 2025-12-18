@@ -3,15 +3,17 @@ using CefSharp;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
+using System.Drawing;
 using psyBrowser.InternalPages;
 
 namespace psyBrowser
 {
     internal static class Program
     {
-        private static Mutex? mutex;
         private static Mutex? _singleInstanceMutex;
         internal static BrowserAppContext? AppCtx;
+        private const string MutexName = @"Local\psyBrowser.SingleInstance";
+        internal const string OpenWindowEventName = @"Local\psyBrowser.OpenWindow";
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -19,8 +21,21 @@ namespace psyBrowser
         static void Main()
         {
             bool createdNew;
-            _singleInstanceMutex = new Mutex(true, @"Local\psyBrowser.SingleInstance", out createdNew);
-            if(!createdNew) { return; } //another instance was already running
+            _singleInstanceMutex = new Mutex(true, MutexName, out createdNew);
+            if (!createdNew)
+            {
+                // Another instance is running (likely tray-only). Ask it to open a window.
+                try
+                {
+                    using var ev = EventWaitHandle.OpenExisting(OpenWindowEventName);
+                    ev.Set();
+                }
+                catch
+                {
+                    // If the first instance hasn't created the event yet, just exit quietly.
+                }
+                return;
+            }
             if (Cef.IsInitialized == true) // Check explicitly for 'true'
             {
                 Debug.WriteLine("CefSharp is already initialized.");
@@ -73,25 +88,129 @@ namespace psyBrowser
     internal sealed class BrowserAppContext : ApplicationContext
     {
         private int _openWindows = 0;
+        private readonly List<Form> _windows = new();
+        private readonly NotifyIcon _tray;
+        private readonly ContextMenuStrip _trayMenu;
+        private readonly EventWaitHandle _openWindowEvent;
+        private readonly Thread _openWindowListener;
+        private readonly SynchronizationContext _uiCtx;
 
         public BrowserAppContext(string? startupUrl = null)
         {
-            OpenNewWindow(startupUrl ?? "about:blank");
-        }
+            // Tray menu
+            _trayMenu = new ContextMenuStrip();
 
+            var miNewWindow = new ToolStripMenuItem("New Window");
+            miNewWindow.Click += (_, __) => OpenNewWindow("about:blank");
+
+            var miExit = new ToolStripMenuItem("Exit");
+            miExit.Click += (_, __) => ExitAll();
+
+            _trayMenu.Items.Add(miNewWindow);
+            _trayMenu.Items.Add(new ToolStripSeparator());
+            _trayMenu.Items.Add(miExit);
+
+            // Tray icon (use the app icon)
+            var appIcon = Icon.ExtractAssociatedIcon(Application.ExecutablePath) ?? SystemIcons.Application;
+
+            _tray = new NotifyIcon
+            {
+                Icon = appIcon,
+                Text = "psyBrowser",
+                Visible = true,
+                ContextMenuStrip = _trayMenu
+            };
+
+            //bring all windows to front or start a new window with double-click of system tray
+            _tray.MouseDoubleClick += (_, e) =>
+            {
+                if (e.Button != MouseButtons.Left)
+                    return;
+
+                if (_windows.Count == 0)
+                {
+                    OpenNewWindow("about:blank");
+                    return;
+                }
+
+                foreach (var w in _windows.ToArray())
+                {
+                    if (w.WindowState == FormWindowState.Minimized)
+                        w.WindowState = FormWindowState.Normal;
+
+                    w.Show();
+                    w.BringToFront();
+                    w.Activate();
+                }
+            };
+
+            OpenNewWindow(startupUrl ?? "about:blank");
+
+            _uiCtx = SynchronizationContext.Current ?? new WindowsFormsSynchronizationContext();
+
+            // Create the named event that 2nd launches will signal
+            _openWindowEvent = new EventWaitHandle(false, EventResetMode.AutoReset, Program.OpenWindowEventName);
+
+            // Background listener: when signaled, open a new window on the UI thread
+            _openWindowListener = new Thread(() =>
+            {
+                while (true)
+                {
+                    _openWindowEvent.WaitOne();
+                    _uiCtx.Post(_ => OpenNewWindow("about:blank"), null);
+                }
+            })
+            {
+                IsBackground = true
+            };
+
+            _openWindowListener.Start();
+
+        }
         public void OpenNewWindow(string url)
         {
             var win = new psyBrowser(url);
+            _windows.Add(win);
+
             _openWindows++;
 
             win.FormClosed += (_, __) =>
             {
+                _windows.Remove(win);
+
                 _openWindows--;
+                /* this ends the master process when the last window is closed; decided to have a system tray icon that persists instead
                 if (_openWindows <= 0)
                     ExitThread(); // ends message loop, app exits
+                */
             };
 
             win.Show();
+        }
+        private void ExitAll()
+        {
+            // Hide tray first so it doesn't linger
+            _tray.Visible = false;
+
+            // Close all windows (triggers FormClosed handlers)
+            foreach (var w in _windows.ToArray())
+            {
+                try { w.Close(); } catch { /* ignore */ }
+            }
+
+            // Ensure the message loop ends even if something prevents Close()
+            ExitThread();
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                try { _tray.Visible = false; } catch { }
+                _tray?.Dispose();
+                _trayMenu?.Dispose();
+                _openWindowEvent?.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
