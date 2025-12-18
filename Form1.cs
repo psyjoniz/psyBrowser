@@ -62,7 +62,7 @@ namespace psyBrowser
             }
             if (keyData == (Keys.Control | Keys.N))
             {
-                OpenNewWindow("about:blank", this);
+                Program.AppCtx?.OpenNewWindow("about:blank");
                 return true;
             }
             if (keyData == (Keys.Control | Keys.R))
@@ -381,7 +381,7 @@ namespace psyBrowser
                     }
                     if ((modifiers & CefEventFlags.ShiftDown) == 0 && windowsKeyCode == (int)Keys.N)
                     {
-                        form.BeginInvoke(new Action(() => psyBrowser.OpenNewWindow("about:blank", form)));
+                        form.BeginInvoke(new Action(() => Program.AppCtx?.OpenNewWindow("about:blank")));
                         return true;
                     }
                 }

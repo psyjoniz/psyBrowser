@@ -11,6 +11,7 @@ namespace psyBrowser
     {
         private static Mutex? mutex;
         private static Mutex? _singleInstanceMutex;
+        internal static BrowserAppContext? AppCtx;
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -64,19 +65,21 @@ namespace psyBrowser
             };
             ApplicationConfiguration.Initialize();
             var startupUrl = (Environment.GetCommandLineArgs().Length > 1) ? Environment.GetCommandLineArgs()[1] : null;
-            Application.Run(new BrowserAppContext(startupUrl));
+            var ctx = new BrowserAppContext(startupUrl);
+            Program.AppCtx = ctx;
+            Application.Run(ctx);
         }
     }
     internal sealed class BrowserAppContext : ApplicationContext
     {
-        private int _openWindows;
+        private int _openWindows = 0;
 
-        public BrowserAppContext(string? startupUrl)
+        public BrowserAppContext(string? startupUrl = null)
         {
-            OpenWindow(startupUrl);
+            OpenNewWindow(startupUrl ?? "about:blank");
         }
 
-        private void OpenWindow(string? url)
+        public void OpenNewWindow(string url)
         {
             var win = new psyBrowser(url);
             _openWindows++;
@@ -85,11 +88,10 @@ namespace psyBrowser
             {
                 _openWindows--;
                 if (_openWindows <= 0)
-                    ExitThread();
+                    ExitThread(); // ends message loop, app exits
             };
 
             win.Show();
         }
     }
-
 }
