@@ -101,7 +101,7 @@ namespace psyBrowser
             _trayMenu = new ContextMenuStrip();
 
             var miNewWindow = new ToolStripMenuItem("New Window");
-            miNewWindow.Click += (_, __) => OpenNewWindow("about:blank");
+            miNewWindow.Click += (_, __) => OpenNewWindow(null);
 
             var miExit = new ToolStripMenuItem("Exit");
             miExit.Click += (_, __) => ExitAll();
@@ -129,7 +129,7 @@ namespace psyBrowser
 
                 if (_windows.Count == 0)
                 {
-                    OpenNewWindow("about:blank");
+                    OpenNewWindow(null);
                     return;
                 }
 
@@ -144,7 +144,7 @@ namespace psyBrowser
                 }
             };
 
-            OpenNewWindow(startupUrl ?? "about:blank");
+            OpenNewWindow(startupUrl);
 
             _uiCtx = SynchronizationContext.Current ?? new WindowsFormsSynchronizationContext();
 
@@ -157,7 +157,7 @@ namespace psyBrowser
                 while (true)
                 {
                     _openWindowEvent.WaitOne();
-                    _uiCtx.Post(_ => OpenNewWindow("about:blank"), null);
+                    _uiCtx.Post(_ => OpenNewWindow(null), null);
                 }
             })
             {
@@ -167,9 +167,18 @@ namespace psyBrowser
             _openWindowListener.Start();
 
         }
-        public void OpenNewWindow(string url)
+        public void OpenNewWindow(string? url = null)
         {
-            var win = new psyBrowser(url);
+            // Rule:
+            // - first window: load vault.LastLocation (unless an explicit url was supplied)
+            // - not first: about:blank unless an explicit url was supplied (ctrl+click/target/etc.)
+            string? effectiveUrl;
+            if (_windows.Count == 0)
+                effectiveUrl = string.IsNullOrWhiteSpace(url) ? null : url;
+            else
+                effectiveUrl = string.IsNullOrWhiteSpace(url) ? "about:blank" : url;
+
+            var win = new psyBrowser(effectiveUrl);
             _windows.Add(win);
 
             _openWindows++;
@@ -177,12 +186,7 @@ namespace psyBrowser
             win.FormClosed += (_, __) =>
             {
                 _windows.Remove(win);
-
                 _openWindows--;
-                /* this ends the master process when the last window is closed; decided to have a system tray icon that persists instead
-                if (_openWindows <= 0)
-                    ExitThread(); // ends message loop, app exits
-                */
             };
 
             win.Show();

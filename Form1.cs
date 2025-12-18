@@ -442,7 +442,7 @@ namespace psyBrowser
 
                 if (!string.IsNullOrWhiteSpace(targetUrl))
                 {
-                    psyBrowser.OpenNewProcess(targetUrl);
+                    Program.AppCtx?.OpenNewWindow(targetUrl);
                 }
 
                 return true; // cancel Chromium popup
