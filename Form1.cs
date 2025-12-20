@@ -15,6 +15,7 @@ namespace psyBrowser
 {
     public partial class psyBrowser : Form
     {
+        private string version = "0.1";
         private static readonly Mutex VaultMutex = new(false, @"Local\psyBrowserVault");
         private readonly string vaultPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -154,7 +155,6 @@ namespace psyBrowser
 
             Process.Start(psi);
         }
-
         private static bool IsFullyOnAnyWorkingArea(Rectangle bounds)
         {
             foreach (var screen in Screen.AllScreens)
@@ -201,7 +201,7 @@ namespace psyBrowser
                 BeginInvoke(new Action(() =>
                 {
                     // keep it simple; you can prepend an app name later if you want
-                    this.Text = e.Title ?? originalTitle;
+                    this.Text = e.Title + " | " + originalTitle + " v" + version ?? originalTitle + " v" + version;
                 }));
             };
 
