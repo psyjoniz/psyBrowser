@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using psyBrowser.InternalPages;
 using CefSharp.Handler;
+using System.Windows.Forms;
 
 namespace psyBrowser
 {
@@ -189,6 +190,7 @@ namespace psyBrowser
                             }));
                     }
                 );
+            browser.DownloadHandler = new CustomDownloadHandler(this);
             browser.AddressChanged += Browser_AddressChanged;
 
             //respect html titles
@@ -665,6 +667,76 @@ namespace psyBrowser
                     eventFlags);
             }
         }
+        internal sealed class CustomDownloadHandler : IDownloadHandler
+        {
+            private readonly psyBrowser _form;
+            public CustomDownloadHandler(psyBrowser form) => _form = form;
+            public bool CanDownload(IWebBrowser chromiumWebBrowser, IBrowser browser, string url, string requestMethod) => true;
+            private readonly HashSet<int> _notified = new();
+            public bool OnBeforeDownload(IWebBrowser chromiumWebBrowser, IBrowser browser, DownloadItem item, IBeforeDownloadCallback callback)
+            {
+                if (callback == null || callback.IsDisposed) return false;
+
+                // sanitize name
+                var name = string.IsNullOrWhiteSpace(item.SuggestedFileName) ? "download" : Path.GetFileName(item.SuggestedFileName);
+
+                var downloadsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+                Directory.CreateDirectory(downloadsDir);
+
+                var fullPath = MakeUnique(Path.Combine(downloadsDir, name));
+
+                Cef.UIThreadTaskFactory.StartNew(() =>
+                {
+                    using (callback)
+                    {
+                        // NO DIALOG. This is the key.
+                        callback.Continue(fullPath, showDialog: false);
+                    }
+                });
+
+                return true;
+            }
+
+            public void OnDownloadUpdated(IWebBrowser chromiumWebBrowser, IBrowser browser, DownloadItem item, IDownloadItemCallback callback)
+            {
+                if (!item.IsComplete) return;
+
+                // avoid double-popups if CefSharp fires multiple updates at completion
+                if (_notified.Contains(item.Id)) return;
+                _notified.Add(item.Id);
+
+                var path = item.FullPath;
+
+                _form.BeginInvoke(new Action(() =>
+                {
+                    if (_form.IsDisposed || _form.Disposing) return;
+
+                    MessageBox.Show(
+                        _form,
+                        $"Downloaded:\n\n{path}",
+                        "Download complete",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }));
+            }
+            private static string MakeUnique(string path)
+            {
+                if (!File.Exists(path)) return path;
+
+                var dir = Path.GetDirectoryName(path)!;
+                var name = Path.GetFileNameWithoutExtension(path);
+                var ext = Path.GetExtension(path);
+
+                for (int i = 1; i < 10000; i++)
+                {
+                    var candidate = Path.Combine(dir, $"{name} ({i}){ext}");
+                    if (!File.Exists(candidate)) return candidate;
+                }
+                return path; // last resort
+            }
+        }
+
         private void ApplyWindowPlacement(LocalVault vault)
         {
             // default behavior if we have nothing saved yet
