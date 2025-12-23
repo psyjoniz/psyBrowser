@@ -16,6 +16,12 @@ namespace psyBrowser.InternalPages
                 return true;
             }
 
+            if (string.Equals(key, "about:config:history", StringComparison.OrdinalIgnoreCase))
+            {
+                browser.Load("psybrowser://config/history/");
+                return true;
+            }
+
             return false;
         }
     }

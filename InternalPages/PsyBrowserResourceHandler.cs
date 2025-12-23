@@ -2,6 +2,9 @@ using CefSharp;
 using CefSharp.Handler;
 using CefSharp.ResponseFilter;
 using System.Text;
+using System.Net;
+using psyBrowser;
+
 
 namespace psyBrowser.InternalPages
 {
@@ -29,13 +32,53 @@ namespace psyBrowser.InternalPages
                     }
 
                     // Route by "host" (config, etc.)
-                    var pageKey = uri.Host.ToLowerInvariant();
+                    var host = uri.Host.ToLowerInvariant();
+                    var path = (uri.AbsolutePath ?? "/").ToLowerInvariant();
 
                     string html;
-                    switch (pageKey)
+
+                    switch (host)
                     {
                         case "config":
-                            html = InternalPageAssets.ReadHtml("about_config.html");
+                            if (path == "/" || path == "")
+                            {
+                                html = InternalPageAssets.ReadHtml("about_config.html");
+                            }
+                            else if (path.StartsWith("/history"))
+                            {
+                                // load vault history and inject into template
+                                var vaultPath = Path.Combine(
+                                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                    "psyBrowser",
+                                    "vault.bin"
+                                );
+
+                                var vault = psyBrowser.LoadVault(vaultPath);
+                                var history = vault?.History ?? new List<string>();
+
+                                var sb = new StringBuilder();
+                                foreach (var u in history.AsEnumerable().Reverse())
+                                {
+                                    var safe = WebUtility.HtmlEncode(u ?? "");
+                                    sb.Append("<li><a href=\"")
+                                      .Append(safe)
+                                      .Append("\">")
+                                      .Append(safe)
+                                      .Append("</a></li>");
+                                }
+
+                                var template = InternalPageAssets.ReadHtml("about_config_history.html");
+                                html = template.Replace("{{HISTORY_LIST}}", sb.ToString());
+                            }
+                            else
+                            {
+                                StatusCode = 404;
+                                StatusText = "404 Not Found";
+                                MimeType = "text/plain";
+                                Stream = new MemoryStream(Encoding.UTF8.GetBytes("404 Not found."));
+                                callback.Continue();
+                                return CefReturnValue.Continue;
+                            }
                             break;
 
                         default:

@@ -93,7 +93,7 @@ namespace psyBrowser
             if (InternalPageRouter.TryHandle(browser, input))
             {
                 textBoxURL.Text = input;
-                PersistLastLocation(input);
+                PersistNavigation(input);
                 return;
             }
 
@@ -102,7 +102,7 @@ namespace psyBrowser
                 string url = NormalizeToUrl(input);
                 textBoxURL.Text = url;
                 browser.Load(url);
-                PersistLastLocation(input);
+                PersistNavigation(url);
                 return;
             }
 
@@ -256,7 +256,7 @@ namespace psyBrowser
         private void Browser_AddressChanged(object? sender, AddressChangedEventArgs e)
         {
             // Always persist last location (covers clicks, redirects, back/forward, etc.)
-            PersistLastLocation(e.Address);
+            PersistNavigation(e.Address);
 
             // Safe UI update
             if (IsDisposed || !IsHandleCreated) return;
@@ -298,7 +298,7 @@ namespace psyBrowser
             {
                 Navigate(textBoxURL.Text);
 
-                PersistLastLocation(textBoxURL.Text);
+                PersistNavigation(textBoxURL.Text);
 
                 e.SuppressKeyPress = true;
             }
@@ -312,7 +312,7 @@ namespace psyBrowser
                 if (string.IsNullOrWhiteSpace(finalUrl))
                     finalUrl = textBoxURL?.Text;
 
-                PersistLastLocation(finalUrl);
+                PersistNavigation(finalUrl);
             }
             catch { }
 
@@ -552,16 +552,48 @@ namespace psyBrowser
                 VaultMutex.ReleaseMutex();
             }
         }
-        private void PersistLastLocation(string? url)
+        private const int MaxHistory = 500;
+
+        private void PersistNavigation(string? url)
         {
             if (string.IsNullOrWhiteSpace(url)) return;
 
+            url = url.Trim();
+
+            // Optional: skip noise
+            if (string.Equals(url, "about:blank", StringComparison.OrdinalIgnoreCase))
+                return;
+
             var vault = LoadVault(vaultPath);
+
+            bool changed = false;
+
             if (!string.Equals(vault.LastLocation, url, StringComparison.OrdinalIgnoreCase))
             {
                 vault.LastLocation = url;
-                SaveVault(vaultPath, vault);
+                changed = true;
             }
+
+            vault.History ??= new List<string>();
+
+            // de-dupe consecutive + avoid duplicates elsewhere
+            if (vault.History.Count == 0 ||
+                !string.Equals(vault.History[^1], url, StringComparison.OrdinalIgnoreCase))
+            {
+                vault.History.RemoveAll(x => string.Equals(x, url, StringComparison.OrdinalIgnoreCase));
+                vault.History.Add(url);
+                changed = true;
+            }
+
+            if (vault.History.Count > MaxHistory)
+            {
+                int overflow = vault.History.Count - MaxHistory;
+                vault.History.RemoveRange(0, overflow);
+                changed = true;
+            }
+
+            if (changed)
+                SaveVault(vaultPath, vault);
         }
         private sealed class CustomRequestHandler : IRequestHandler
         {
@@ -572,7 +604,7 @@ namespace psyBrowser
             {
                 if (frame.IsMain && userGesture && request != null && !string.IsNullOrWhiteSpace(request.Url))
                 {
-                    form.PersistLastLocation(request.Url);
+                    form.PersistNavigation(request.Url);
                 }
                 return false;
             }
@@ -794,7 +826,9 @@ namespace psyBrowser
     }
     public sealed class LocalVault
     {
+        // URL memory
         public string LastLocation { get; set; } = "about:blank";
+        public List<string> History { get; set; } = new();
         // Window placement
         public int? WinX { get; set; }
         public int? WinY { get; set; }
