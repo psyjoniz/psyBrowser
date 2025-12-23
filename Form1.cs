@@ -30,6 +30,12 @@ namespace psyBrowser
         private ChromiumWebBrowser browser;
         private double currentZoomLevel = 0;
         private const int CascadeOffset = 30;
+        /* history suggestion */
+        private readonly System.Windows.Forms.Timer _historyDebounceTimer = new();
+        private readonly ListBox _historySuggestList = new();
+        private const int HistoryDebounceMs = 250;
+        private const int MaxSuggestions = 20;
+        /* /history suggestion */
         /*
          * don't forget to apply keyboard listeneners in cef layer too (this is the window layer)
          */
@@ -83,6 +89,8 @@ namespace psyBrowser
         }
         internal void Navigate(string input)
         {
+            HideSuggestList(); // hide suggestions on any navigation
+
             //System.Windows.Forms.MessageBox.Show("Navigate() hit from: " + System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             input = (input ?? "").Trim();
@@ -167,6 +175,8 @@ namespace psyBrowser
         {
             InitializeComponent();
 
+            this.MouseDown += (_, __) => HideSuggestList();
+
             string originalTitle = this.Text;
 
             var vault = LoadVault(vaultPath);
@@ -176,6 +186,7 @@ namespace psyBrowser
             //url = "https://browserdetect.psy-core.com";
 
             browser = new ChromiumWebBrowser(url);
+            browser.MouseDown += (_, __) => HideSuggestList();
             browser.LifeSpanHandler = new CustomLifeSpanHandler();
             browser.RequestHandler = new CustomRequestHandler(this);
             browser.MenuHandler = new CustomMenuHandler(isUiAlive: () => !IsDisposed && !Disposing && IsHandleCreated, openInNewWindowOnUi: (targetUrl) =>
@@ -218,6 +229,30 @@ namespace psyBrowser
             panelRenderer.Controls.Add(browser);
 
             textBoxURL.KeyDown += TextBoxURL_KeyDown;
+
+            /* history suggestion */
+            // debounce timer
+            _historyDebounceTimer.Interval = HistoryDebounceMs;
+            _historyDebounceTimer.Tick += HistoryDebounceTimer_Tick;
+            // suggestion list UI
+            _historySuggestList.Visible = false;
+            _historySuggestList.IntegralHeight = false;
+            _historySuggestList.TabStop = false;
+            _historySuggestList.BorderStyle = BorderStyle.FixedSingle;
+            _historySuggestList.Click += HistorySuggestList_Click;
+            _historySuggestList.DoubleClick += HistorySuggestList_Click;
+            _historySuggestList.KeyDown += HistorySuggestList_KeyDown;
+            // place it on the form (same parent as textBoxURL)
+            this.Controls.Add(_historySuggestList);
+            // typing events
+            textBoxURL.TextChanged += TextBoxURL_TextChanged;
+            textBoxURL.KeyDown += TextBoxURL_Autocomplete_KeyDown;
+            textBoxURL.LostFocus += TextBoxURL_LostFocus;
+            textBoxURL.MouseDown += (_, __) => HideSuggestList();
+            // keep it positioned on resize/layout
+            this.Resize += (_, __) => PositionSuggestList();
+            this.Shown += (_, __) => PositionSuggestList();
+            /* /history suggestion */
 
             browser.KeyboardHandler = new CustomKeyboardHandler(this);
 
@@ -283,7 +318,7 @@ namespace psyBrowser
                 {
                     if (IsDisposed)
                         return;
-
+                    HideSuggestList();
                     progressBarPageLoading.Visible = e.IsLoading;
                 }));
             }
@@ -823,6 +858,150 @@ namespace psyBrowser
 
             SaveVault(vaultPath, vault);
         }
+
+        /* history suggestion */
+        private void TextBoxURL_TextChanged(object? sender, EventArgs e)
+        {
+            // restart debounce on every keystroke
+            _historyDebounceTimer.Stop();
+            _historyDebounceTimer.Start();
+        }
+        private void HistoryDebounceTimer_Tick(object? sender, EventArgs e)
+        {
+            _historyDebounceTimer.Stop();
+            UpdateHistorySuggestions();
+        }
+        private void UpdateHistorySuggestions()
+        {
+            var q = (textBoxURL.Text ?? "").Trim();
+
+            // don't show suggestions if empty
+            if (string.IsNullOrWhiteSpace(q))
+            {
+                HideSuggestList();
+                return;
+            }
+
+            // load history (safe: never modify URL textbox here)
+            var vault = LoadVault(vaultPath);
+            var history = vault?.History ?? new List<string>();
+
+            // contains match, case-insensitive, most recent first
+            var matches = history
+                .AsEnumerable()
+                .Reverse()
+                .Where(u => !string.IsNullOrWhiteSpace(u) &&
+                            u.Contains(q, StringComparison.OrdinalIgnoreCase))
+                .Take(MaxSuggestions)
+                .ToList();
+
+            if (matches.Count == 0)
+            {
+                HideSuggestList();
+                return;
+            }
+
+            _historySuggestList.BeginUpdate();
+            _historySuggestList.Items.Clear();
+            foreach (var m in matches)
+                _historySuggestList.Items.Add(m);
+            _historySuggestList.EndUpdate();
+
+            PositionSuggestList();
+            _historySuggestList.Visible = true;
+        }
+        private void PositionSuggestList()
+        {
+            // position under the URL box
+            var tb = textBoxURL;
+            var pt = this.PointToClient(tb.Parent.PointToScreen(tb.Location));
+
+            _historySuggestList.Left = pt.X;
+            _historySuggestList.Top = pt.Y + tb.Height;
+            _historySuggestList.Width = tb.Width;
+
+            // height: up to ~8 rows
+            int rows = Math.Min(_historySuggestList.Items.Count, 8);
+            _historySuggestList.Height = Math.Max(1, rows) * _historySuggestList.ItemHeight + 4;
+
+            _historySuggestList.BringToFront();
+        }
+        private void HideSuggestList()
+        {
+            _historySuggestList.Visible = false;
+            _historySuggestList.Items.Clear();
+        }
+        private void ApplySelectedSuggestion()
+        {
+            if (_historySuggestList.SelectedItem is not string selected ||
+                string.IsNullOrWhiteSpace(selected))
+                return;
+
+            // put it in the box (no auto-suggest fill except explicit selection)
+            textBoxURL.TextChanged -= TextBoxURL_TextChanged;
+            textBoxURL.Text = selected;
+            textBoxURL.SelectionStart = textBoxURL.Text.Length;
+            textBoxURL.SelectionLength = 0;
+            textBoxURL.TextChanged += TextBoxURL_TextChanged;
+
+            HideSuggestList();
+            textBoxURL.Focus();
+
+            // navigate immediately
+            Navigate(selected);
+        }
+
+        private void HistorySuggestList_Click(object? sender, EventArgs e)
+        {
+            ApplySelectedSuggestion();
+        }
+        private void HistorySuggestList_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                ApplySelectedSuggestion();
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                e.SuppressKeyPress = true;
+                HideSuggestList();
+                textBoxURL.Focus();
+            }
+        }
+        private void TextBoxURL_Autocomplete_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (!_historySuggestList.Visible)
+                return;
+
+            if (e.KeyCode == Keys.Down)
+            {
+                e.SuppressKeyPress = true;
+                if (_historySuggestList.Items.Count > 0)
+                {
+                    _historySuggestList.Focus();
+                    _historySuggestList.SelectedIndex = Math.Min(
+                        Math.Max(_historySuggestList.SelectedIndex, 0),
+                        _historySuggestList.Items.Count - 1
+                    );
+                }
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                e.SuppressKeyPress = true;
+                HideSuggestList();
+            }
+            // IMPORTANT: do NOT auto-apply on Enter here (only on explicit list selection)
+        }
+        private void TextBoxURL_LostFocus(object? sender, EventArgs e)
+        {
+            // if focus goes to the suggestion list, keep it
+            if (_historySuggestList.Focused)
+                return;
+
+            HideSuggestList();
+        }
+        /* /history suggestion */
     }
     public sealed class LocalVault
     {
