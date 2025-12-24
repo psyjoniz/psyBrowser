@@ -15,7 +15,7 @@ namespace psyBrowser
 {
     public partial class psyBrowser : Form
     {
-        private string version = "0.1";
+        private string version = "0.2";
         private static readonly Mutex VaultMutex = new(false, @"Local\psyBrowserVault");
         private readonly string vaultPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
