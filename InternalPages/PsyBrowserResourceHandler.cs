@@ -40,13 +40,12 @@ namespace psyBrowser.InternalPages
                     switch (host)
                     {
                         case "config":
-                            if (path == "/" || path == "")
+                            // ignore path for now (keep it simple/expandable later)
+                            html = InternalPageAssets.ReadHtml("about_config.html");
+                            break;
+
+                        case "history":
                             {
-                                html = InternalPageAssets.ReadHtml("about_config.html");
-                            }
-                            else if (path.StartsWith("/history"))
-                            {
-                                // load vault history and inject into template
                                 var vaultPath = Path.Combine(
                                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                                     "psyBrowser",
@@ -67,18 +66,13 @@ namespace psyBrowser.InternalPages
                                       .Append("</a></li>");
                                 }
 
-                                var template = InternalPageAssets.ReadHtml("about_config_history.html");
+                                var template = InternalPageAssets.ReadHtml("about_history.html");
                                 html = template.Replace("{{HISTORY_LIST}}", sb.ToString());
+                                break;
                             }
-                            else
-                            {
-                                StatusCode = 404;
-                                StatusText = "404 Not Found";
-                                MimeType = "text/plain";
-                                Stream = new MemoryStream(Encoding.UTF8.GetBytes("404 Not found."));
-                                callback.Continue();
-                                return CefReturnValue.Continue;
-                            }
+
+                        case "about":
+                            html = InternalPageAssets.ReadHtml("about.html");
                             break;
 
                         default:
