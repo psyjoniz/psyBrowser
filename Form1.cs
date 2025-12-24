@@ -873,20 +873,24 @@ namespace psyBrowser
         }
         private void UpdateHistorySuggestions()
         {
+            // Only suggest when the user is actively in the URL box (or navigating the list).
+            if (!textBoxURL.Focused && !_historySuggestList.Focused)
+            {
+                HideSuggestList();
+                return;
+            }
+
             var q = (textBoxURL.Text ?? "").Trim();
 
-            // don't show suggestions if empty
             if (string.IsNullOrWhiteSpace(q))
             {
                 HideSuggestList();
                 return;
             }
 
-            // load history (safe: never modify URL textbox here)
             var vault = LoadVault(vaultPath);
             var history = vault?.History ?? new List<string>();
 
-            // contains match, case-insensitive, most recent first
             var matches = history
                 .AsEnumerable()
                 .Reverse()
